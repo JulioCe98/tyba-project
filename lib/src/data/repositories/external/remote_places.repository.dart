@@ -18,4 +18,17 @@ class RemotePlacesRepository {
       return null;
     }
   }
+
+  Future<List<Place>?> getPlacesNearByUser(position, category) async {
+    Map<String, dynamic>? rawData = await _placesService.getPlacesNearByUser(position, category);
+    if (rawData != null) {
+      List<Place> places = [];
+      for (var item in rawData['features']) {
+        places.add(Place.fromMap(item['properties']));
+      }
+      return places;
+    } else {
+      return null;
+    }
+  }
 }

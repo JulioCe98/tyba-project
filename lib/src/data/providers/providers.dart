@@ -3,6 +3,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:tyba_hiring_test/src/app/controllers/places_controller.dart';
 import 'package:tyba_hiring_test/src/data/repositories/external/remote_geolocation_repository.dart';
 import 'package:tyba_hiring_test/src/data/repositories/external/remote_places.repository.dart';
+import 'package:tyba_hiring_test/src/data/repositories/local/local_geolocation_repository.dart';
 import 'package:tyba_hiring_test/src/data/services/geolocation_service.dart';
 import 'package:tyba_hiring_test/src/data/services/places_service.dart';
 import 'package:tyba_hiring_test/src/data/usecases/geolocation_use_case.dart';
@@ -10,6 +11,10 @@ import 'package:tyba_hiring_test/src/data/usecases/places_use_case.dart';
 
 Provider<GeolocationService> geolocationServiceProvider = Provider<GeolocationService>((ref) {
   return GeolocationService();
+});
+
+Provider<LocalGeolocationRepository> localGeolocationRepositoryProvider = Provider<LocalGeolocationRepository>((ref) {
+  return LocalGeolocationRepository(ref.read(geolocationServiceProvider));
 });
 
 Provider<RemoteGeolocationRepository> remoteGeolocationRepositoryProvider = Provider<RemoteGeolocationRepository>((ref) {
@@ -29,7 +34,7 @@ Provider<RemotePlacesRepository> remotePlacesRepositoryProvider = Provider<Remot
 });
 
 Provider<PlacesUseCase> placesUseCaseProvider = Provider<PlacesUseCase>((ref) {
-  return PlacesUseCase(ref.read(remotePlacesRepositoryProvider));
+  return PlacesUseCase(ref.read(remotePlacesRepositoryProvider), ref.read(localGeolocationRepositoryProvider));
 });
 
 StateNotifierProvider<PlacesController, PlacesState> placeControllerProvider =

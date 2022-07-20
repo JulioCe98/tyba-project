@@ -36,7 +36,7 @@ class _HomeScreenTitle extends ConsumerStatefulWidget {
 
 class _HomeScreenTitleState extends ConsumerState<_HomeScreenTitle> {
   void _getPlacesByCriteria(String address) {
-    ref.read(placeControllerProvider.notifier).getPlacesByAddress(address, 'catering.restaurant');
+    ref.read(placeControllerProvider.notifier).getPlacesByAddress(address, 'catering');
   }
 
   @override
@@ -52,7 +52,17 @@ class _HomeScreenTitleState extends ConsumerState<_HomeScreenTitle> {
             Text('Welcome Back', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: size.width * 0.08))
           ]),
           SizedBox(height: size.height * 0.01),
-          SearchBar(onChanged: _getPlacesByCriteria)
+          SearchBar(onChanged: _getPlacesByCriteria),
+          SizedBox(height: size.height * 0.01),
+          GestureDetector(
+              onTap: () => ref.read(placeControllerProvider.notifier).getPlacesNearByUser('catering'),
+              child: Row(children: const [
+                Icon(Icons.near_me),
+                Text(
+                  'Search places near me',
+                  style: TextStyle(decoration: TextDecoration.underline),
+                )
+              ]))
         ]));
   }
 }

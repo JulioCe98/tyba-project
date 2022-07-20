@@ -27,4 +27,9 @@ class PlacesController extends StateNotifier<PlacesState> {
       state = state.copyWith(places: places);
     }
   }
+
+  void getPlacesNearByUser(String category) async {
+    List<Place>? places = await _placesUseCase.getPlacesNearByUser(category);
+    state = state.copyWith(places: places);
+  }
 }
