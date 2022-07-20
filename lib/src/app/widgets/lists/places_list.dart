@@ -27,20 +27,29 @@ class PlacesList extends StatelessWidget {
                   borderRadius: const BorderRadius.only(topRight: Radius.circular(40.0), topLeft: Radius.circular(40.0))),
               child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 400),
-                  child: placesController.loadedPlaces.isNotEmpty
-                      ? Column(children: [
-                          Text('Places Founded', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: size.width * 0.08)),
-                          SizedBox(height: size.height * 0.01),
-                          Expanded(
-                            child: ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: placesController.loadedPlaces.length,
-                                itemBuilder: (context, int index) {
-                                  return PlaceListTile(place: placesController.loadedPlaces[index]);
-                                }),
-                          )
-                        ])
-                      : const _PlacesListPlaceholder())));
+                  child: placesController.isFetching
+                      ? const Center(child: CircularProgressIndicator(color: Colors.green))
+                      : placesController.loadedPlaces.isNotEmpty
+                          ? Column(children: [
+                              Row(children: [
+                                Expanded(
+                                    child: Text('Places Founded',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: size.width * 0.08))),
+                                SizedBox(width: size.width * 0.01),
+                                IconButton(onPressed: () => ref.read(placeControllerProvider.notifier).cleanState(), icon: const Icon(Icons.close))
+                              ]),
+                              SizedBox(height: size.height * 0.01),
+                              Expanded(
+                                child: ListView.builder(
+                                    physics: const BouncingScrollPhysics(),
+                                    itemCount: placesController.loadedPlaces.length,
+                                    itemBuilder: (context, int index) {
+                                      return PlaceListTile(place: placesController.loadedPlaces[index]);
+                                    }),
+                              )
+                            ])
+                          : const _PlacesListPlaceholder())));
     });
   }
 }
