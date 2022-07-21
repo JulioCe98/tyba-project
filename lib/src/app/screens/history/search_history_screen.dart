@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:tyba_hiring_test/src/app/controllers/history_controller.dart';
 import 'package:tyba_hiring_test/src/data/models/history.dart';
 import 'package:tyba_hiring_test/src/data/providers/providers.dart';

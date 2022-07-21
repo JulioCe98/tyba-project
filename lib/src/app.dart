@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tyba_hiring_test/src/app/screens/history/search_history.dart';
+
+import 'package:tyba_hiring_test/src/app/screens/history/search_history_screen.dart';
 import 'package:tyba_hiring_test/src/app/screens/home_screen.dart';
 
 class MyApp extends StatelessWidget {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:tyba_hiring_test/src/app/screens/history/search_history.dart';
 
+import 'package:tyba_hiring_test/src/app/screens/history/search_history_screen.dart';
 import 'package:tyba_hiring_test/src/app/widgets/lists/places_list.dart';
 import 'package:tyba_hiring_test/src/app/widgets/search/search_bar.dart';
 import 'package:tyba_hiring_test/src/data/models/history.dart';
@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
         body: Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: const BoxDecoration(image: DecorationImage(image: AssetImage('assets/imgs/enjoy.jpg'))),
+            decoration: const BoxDecoration(color: Color(0xFFfff9ef), image: DecorationImage(image: AssetImage('assets/imgs/enjoy.jpg'))),
             child: SafeArea(
                 child:
                     Padding(padding: EdgeInsets.only(top: size.height * 0.05), child: Stack(children: const [_HomeScreenTitle(), PlacesList()])))));
