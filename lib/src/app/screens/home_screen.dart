@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:tyba_hiring_test/src/app/screens/history/search_history.dart';
 
 import 'package:tyba_hiring_test/src/app/widgets/lists/places_list.dart';
 import 'package:tyba_hiring_test/src/app/widgets/search/search_bar.dart';
+import 'package:tyba_hiring_test/src/data/models/history.dart';
 import 'package:tyba_hiring_test/src/data/providers/providers.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,6 +20,12 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+        floatingActionButton: Container(
+            decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(100.0)),
+            child: IconButton(
+                onPressed: () => Navigator.of(context).pushNamed(SearchHistoryScreen.routeName),
+                icon: const Icon(Icons.history, color: Colors.black))),
         body: Container(
             width: double.infinity,
             height: double.infinity,
@@ -36,7 +45,23 @@ class _HomeScreenTitle extends ConsumerStatefulWidget {
 
 class _HomeScreenTitleState extends ConsumerState<_HomeScreenTitle> {
   void _getPlacesByCriteria(String address) {
+    ref
+        .read(historyControllerProvider.notifier)
+        .saveHistory(History(searchCriteria: address, dateTime: DateTime.now().millisecondsSinceEpoch.toString()));
+
     ref.read(placeControllerProvider.notifier).getPlacesByAddress(address, 'catering');
+  }
+
+  void _getPlacesNearByUser() async {
+    Position? userLocation = await ref.read(geolocationServiceProvider).getPosition();
+
+    if (userLocation != null) {
+      ref.read(historyControllerProvider.notifier).saveHistory(History(
+          searchCriteria: "Nearby : LAT => ${userLocation.latitude}, LONG => ${userLocation.longitude}",
+          dateTime: DateTime.now().millisecondsSinceEpoch.toString()));
+    }
+
+    ref.read(placeControllerProvider.notifier).getPlacesNearByUser('catering');
   }
 
   @override
@@ -55,14 +80,9 @@ class _HomeScreenTitleState extends ConsumerState<_HomeScreenTitle> {
           SearchBar(onChanged: _getPlacesByCriteria),
           SizedBox(height: size.height * 0.01),
           GestureDetector(
-              onTap: () => ref.read(placeControllerProvider.notifier).getPlacesNearByUser('catering'),
-              child: Row(children: const [
-                Icon(Icons.near_me),
-                Text(
-                  'Search places near me',
-                  style: TextStyle(decoration: TextDecoration.underline),
-                )
-              ]))
+              onTap: _getPlacesNearByUser,
+              child:
+                  Row(children: const [Icon(Icons.near_me), Text('Search places near me', style: TextStyle(decoration: TextDecoration.underline))]))
         ]));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tyba_hiring_test/src/app/screens/history/search_history.dart';
 import 'package:tyba_hiring_test/src/app/screens/home_screen.dart';
 
 class MyApp extends StatelessWidget {
@@ -11,6 +12,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Tyba Hiring test',
         initialRoute: HomeScreen.routeName,
-        routes: {HomeScreen.routeName: (context) => const HomeScreen()});
+        routes: {HomeScreen.routeName: (context) => const HomeScreen(), SearchHistoryScreen.routeName: (context) => const SearchHistoryScreen()});
   }
 }
